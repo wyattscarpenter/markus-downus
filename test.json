@@ -1,0 +1,28 @@
+{
+  "first_level": {
+    "this_is_the_name": {
+      "name": "This is the Name",
+      "effect": "the effect",
+      "attacks": ["this one", "this one"],
+      "meta_tags": ["this", "that", "these"]
+    },
+    "second_level": {
+      "here_we_are": {
+        "name": "Here We Are",
+        "table": {
+          "outcomes": {
+            "1": "one",
+            "2": "two",
+            "3-6": "a whole bunch"
+          }
+        }
+      },
+      "normal_one": {
+        "name": "Another more normal one",
+        "effect": "the effect",
+        "flavor_text": "flavor text",
+        "meta_tags": ["this", "that", "this"]
+      }
+    }
+  }
+}
