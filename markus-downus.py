@@ -10,24 +10,31 @@ def parse_markdown_to_json(md: str) -> dict[str, Slyd]:
     data = {}
     current_section = None
     current_subsection = None
+    current_subsubsection = None
     for line in md.splitlines():
         line = line.strip()
-        if line.startswith('# '):
-            current_section = slugify(line[2:])
-            data[current_section] = {}
-        elif line.startswith('## '):
-            current_subsection = slugify(line[3:])
+        if line.startswith('name:'):
+            current_subsubsection = slugify(line[5:])
+            if current_subsection:
+                data[current_section][current_subsection][current_subsubsection] = {}
+            else:
+                data[current_section][current_subsubsection] = {}
+        if line.startswith('##'): # note that this has to come first so it doesn't match the one-# rule either
+            current_subsection = slugify(line[2:])
             data[current_section][current_subsection] = {}
+        elif line.startswith('#'):
+            current_section = slugify(line[1:])
+            data[current_section] = {}
         elif ':' in line:
             key, value = parse_key_value(line)
             if key == 'outcomes':
-                data[current_section][current_subsection]['table'] = {'outcomes': {}}
-            elif current_subsection and key.isdigit() or '-' in key:
-                data[current_section][current_subsection]['table']['outcomes'][key] = value
+                data[current_section][current_subsection][current_subsubsection]['table'] = {'outcomes': {}}
+            elif current_subsection and key.isdigit() or '-' in key: #todo: this is almost certainly the wrong approach
+                data[current_section][current_subsection][current_subsubsection]['table']['outcomes'][key] = value
             elif current_subsection:
-                data[current_section][current_subsection][key] = value
+                data[current_section][current_subsection][current_subsubsection][key] = value
             else:
-                data[current_section][key] = value
+                data[current_section][current_subsubsection][key] = value
     return data
 
 
@@ -35,11 +42,9 @@ def slugify(text: str) -> str:
     return re.sub(r'\W+', '_', text.lower()).strip('_')
 
 
-def parse_key_value(line: str) -> dict[str, Slyd] | tuple[str, str]:
+def parse_key_value(line: str) -> tuple[str, str|list[str]]:
     key, value = map(str.strip, line.split(':', 1))
-    if key in ['attacks', 'meta_tags']:
-        value = [v.strip() for v in value.split(',')]
-    return key, value
+    return key, value if key not in ['attacks', 'meta_tags'] else [v.strip() for v in value.split(',')]
 
 
 def lf_print(s: str) -> None:
