@@ -44,7 +44,7 @@ So this would look like the json
           }
         }
       },
-      "normal_one": {
+      "another_more_normal_one": {
         "name": "Another more normal one",
         "effect": "the effect",
         "flavor_text": "flavor text",
