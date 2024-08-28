@@ -3,11 +3,10 @@
 import re
 import json
 import sys
-import os
-from typing import Any, Union
 
+type Slyd = str | list[Slyd] | dict[str, Slyd]
 
-def parse_markdown_to_json(md: str) -> dict[str, Any]:
+def parse_markdown_to_json(md: str) -> dict[str, Slyd]:
     data = {}
     current_section = None
     current_subsection = None
@@ -36,7 +35,7 @@ def slugify(text: str) -> str:
     return re.sub(r'\W+', '_', text.lower()).strip('_')
 
 
-def parse_key_value(line: str) -> Union[dict[str, Any], tuple[str, str]]:
+def parse_key_value(line: str) -> dict[str, Slyd] | tuple[str, str]:
     key, value = map(str.strip, line.split(':', 1))
     if key in ['attacks', 'meta_tags']:
         value = [v.strip() for v in value.split(',')]
