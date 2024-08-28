@@ -3,6 +3,7 @@
 import re
 import json
 import sys
+import os
 from typing import Any, Union
 
 
@@ -10,9 +11,7 @@ def parse_markdown_to_json(md: str) -> dict[str, Any]:
     data = {}
     current_section = None
     current_subsection = None
-
-    lines = md.splitlines()
-    for line in lines:
+    for line in md.splitlines():
         line = line.strip()
         if line.startswith('# '):
             current_section = slugify(line[2:])
@@ -44,9 +43,13 @@ def parse_key_value(line: str) -> Union[dict[str, Any], tuple[str, str]]:
     return key, value
 
 
+def lf_print(s: str) -> None:
+  with open(1, "wb") as o:
+    o.write(bytes(s, encoding='utf-8'))
+
 def process_input(md_input: str) -> None:
     json_output = parse_markdown_to_json(md_input)
-    print(json.dumps(json_output, indent=2))
+    lf_print(json.dumps(json_output, indent=2))
 
 
 def main() -> None:
