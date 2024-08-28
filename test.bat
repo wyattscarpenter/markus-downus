@@ -1,2 +1,2 @@
-python markus-downus.py >result.txt
+python markus-downus.py example.md >result.txt
 wsl sdiff test.json result.txt

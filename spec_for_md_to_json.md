@@ -1,4 +1,4 @@
-i want to be able to seamlessly transition from markdown to json
+i want to be able to seamlessly transition from markdown to json, in a particular way
 this json will be in a particular format with a particular selection of fields
 heres an example:
 
